@@ -7,7 +7,7 @@
 . /etc/slack-package.conf
 
 NAME=qemu
-VERSION=0.8.2
+VERSION=0.9.0
 BUILD=1
 
 cd $TMP
@@ -17,6 +17,7 @@ cd $SRC
 fix_source
 
 CFLAGS=$SLKCFLAGS \
+CXXFLAGS=$SLKCFLAGS \
 ./configure --prefix=/usr \
 	    --libdir=/usr/lib \
             --sysconfdir=/etc \
