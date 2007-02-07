@@ -1,4 +1,4 @@
-20c20
-< CFLAGS=-Wall -O2 -g -fno-strict-aliasing
+24c24
+< BASE_CFLAGS=
 ---
-> CFLAGS=-Wall -O2 -march=i486 -mcpu=i686 -fno-strict-aliasing -I.
+> BASE_CFLAGS=-Wall -O2 -march=i486 -mcpu=i686
