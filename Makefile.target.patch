@@ -1,4 +1,0 @@
-24c24
-< BASE_CFLAGS=
----
-> BASE_CFLAGS=-Wall -O2 -march=i486 -mcpu=i686
