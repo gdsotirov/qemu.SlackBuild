@@ -7,7 +7,7 @@
 . /etc/slack-package.conf
 
 NAME=qemu
-VERSION=0.9.0
+VERSION=0.9.1
 BUILD=1
 
 cd $TMP
@@ -19,39 +19,38 @@ fix_source
 CFLAGS=$SLKCFLAGS \
 CXXFLAGS=$SLKCFLAGS \
 ./configure --prefix=/usr \
-	    --libdir=/usr/lib \
-            --sysconfdir=/etc \
-	    --enable-system \
-	    --enable-user \
-	    --enable-adlib \
-            --enable-alsa
+            --enable-alsa \
+            --enable-system \
+            --enable-linux-user \
+            --enable-adlib \
+            --disable-gcc-check || exit 1
 
-# It seems that whatever CFLAGS are passed they are not taken into effect, so
-# I'm patching the Makefiles here to ensure proper compilation
-patch Makefile $CWD/Makefile.patch
-patch Makefile.target $CWD/Makefile.target.patch
-make
+make || exit 2
 
 PKG="$TMP/package-$NAME"
 mkdir -p $PKG
 
-make install prefix=$PKG/usr \
-             bindir=$PKG/usr/bin \
-             mandir=$PKG/usr/man \
-             datadir=$PKG/usr/share/$NAME \
-             docdir=$PKG/usr/doc/$NAME-$VERSION
+make DESTDIR=$PKG \
+     prefix=/usr \
+     bindir=/usr/bin \
+     mandir=/usr/man \
+     datadir=/usr/share/$NAME \
+     docdir=/usr/doc/$NAME-$VERSION \
+     install || exit 3
 
 bin_perms $PKG
+( cd $PKG; strip_bin )
 gzip_man $PKG
 create_docs $PKG $NAME-$VERSION
 
 mkdir -p $PKG/install
-install -m 644 $CWD/slack-desc $PKG/install/slack-desc
+install -m 644 $CWD/slack-desc     $PKG/install/slack-desc
+install -m 644 $CWD/slack-required $PKG/install/slack-required
+
 mkdir -p $PKG/usr/src/slackbuilds/$NAME-$VERSION
-install -m 644 $CWD/slack-desc $PKG/usr/src/slackbuilds/$NAME-$VERSION
-install -m 644 $CWD/$NAME.SlackBuild $PKG/usr/src/slackbuilds/$NAME-$VERSION
-install -m 644 $CWD/Makefile.patch $PKG/usr/src/slackbuilds/$NAME-$VERSION
-install -m 644 $CWD/Makefile.target.patch $PKG/usr/src/slackbuilds/$NAME-$VERSION
+install -m 644 $CWD/slack-desc       $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-desc
+install -m 644 $CWD/slack-required   $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-required
+install -m 644 $CWD/$NAME.SlackBuild $PKG/usr/src/slackbuilds/$NAME-$VERSION/$NAME.SlackBuild
 
 cd $PKG
 PKGNAME=$NAME-$VERSION-$ARCH-$BUILD$MYIN
