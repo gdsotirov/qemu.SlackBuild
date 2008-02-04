@@ -1,11 +1,11 @@
-qemu: Qemu - open source processor emulator
+qemu: Qemu (open source processor emulator)
 qemu:
-qemu: QEMU is a genric and open source processor emulator which achieves good
-qemu: emulation speed by using dynamic translation. Qemu is capable of
-qemu: emulating full system (for example PC) including a processor and various
-qemu: peripherals, emulating a cpu clone (for launching Linux processes
-qemu: compiled for one CPU on another CPU), or acting as a virtualizer (via
-qemu: the kqemu Accelerator Module, which is not included here due to
-qemu: restrictive license).
+qemu: QEMU is a genric and open source processor emulator which achieves
+qemu: good emulation speed by using dynamic translation. Qemu is capable of
+qemu: emulating full system (for example PC) including a processor and
+qemu: various peripherals, emulating a cpu clone (for launching Linux
+qemu: processes compiled for one CPU on another CPU), or acting as a
+qemu: virtualizer (via the kqemu Accelerator Module, which is not included
+qemu: here).
 qemu:
 qemu: Packaged by Georgi D. Sotirov <gdsotirov@dir.bg>
