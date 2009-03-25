@@ -7,7 +7,7 @@
 . /etc/slack-package.conf
 
 NAME=qemu
-VERSION=0.9.1
+VERSION=0.10.1
 BUILD=1
 
 cd $TMP
@@ -19,11 +19,12 @@ fix_source
 CFLAGS=$SLKCFLAGS \
 CXXFLAGS=$SLKCFLAGS \
 ./configure --prefix=/usr \
-            --enable-alsa \
+            --audio-drv-list=oss,alsa,sdl,esd \
+            --audio-card-list=ac97,es1370,sb16,cs4231a,adlib,gus \
+            --enable-mixemu \
+            --enable-sparse \
             --enable-system \
-            --enable-linux-user \
-            --enable-adlib \
-            --disable-gcc-check || exit 1
+            --enable-linux-user || exit 1
 
 make || exit 2
 
@@ -31,15 +32,13 @@ PKG="$TMP/package-$NAME"
 mkdir -p $PKG
 
 make DESTDIR=$PKG \
-     prefix=/usr \
-     bindir=/usr/bin \
+     bindir=/bin \
      mandir=/usr/man \
      datadir=/usr/share/$NAME \
      docdir=/usr/doc/$NAME-$VERSION \
      install || exit 3
 
 bin_perms $PKG
-( cd $PKG; strip_bin )
 gzip_man $PKG
 create_docs $PKG $NAME-$VERSION
 
