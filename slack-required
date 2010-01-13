@@ -1,6 +1,8 @@
 alsa-lib >= 1.0.17a
 audiofile >= 0.2.6
 bluez-libs >= 3.36
+curl >= 7.19.2
+e2fsprogs >= 1.41.3
 esound >= 0.2.38
 glibc-solibs >= 2.7
 gnutls >= 2.6.2
@@ -14,6 +16,7 @@ libgcrypt >= 1.4.0
 libgpg-error >= 1.6
 libxcb >= 1.1
 ncurses >= 5.6
+openssl >= 0.9.8i | openssl-solibs >= 0.9.8i
 sdl >= 1.2.13
 svgalib >= 1.9.25
 zlib >= 1.2.3
