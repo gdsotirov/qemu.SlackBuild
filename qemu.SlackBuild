@@ -2,17 +2,17 @@
 #
 # SlackBuild for Qemu
 # Written by Georgi D. Sotirov <gdsotirov@dir.bg>
+# Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
 
 . ../slack-package.conf
 
 NAME=qemu
-VERSION=0.12.1
-BUILD=1
+VERSION=0.12.5
+BUILD=${BUILD:-1}
 
 TMP=${TMP:-/tmp}
 CWD=${CWD:-`pwd`}
-PKG_DIR=${PKG_DIR:-/tmp}
 
 if [ ! -e $TMP ]; then
   mkdir -p $TMP # location to build the source
@@ -33,7 +33,7 @@ mkdir -p $PKG
 
 # Extract and fix source
 cd $TMP
-tar xzvf $CWD/$NAME-$VERSION.tar.gz
+tar -xvf $CWD/$NAME-$VERSION.tar.gz
 cd $SRC
 fix_source
 
@@ -67,7 +67,7 @@ make DESTDIR=$PKG \
 # Preapare
 bin_perms $PKG
 gzip_man $PKG
-create_docs $PKG $NAME-$VERSION
+( cd $SRC; create_docs $PKG $NAME-$VERSION )
 
 mkdir -p $PKG/install
 install -m 644 $CWD/slack-desc     $PKG/install/slack-desc
