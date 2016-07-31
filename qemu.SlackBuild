@@ -19,13 +19,13 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: qemu.SlackBuild,v 1.10 2016/07/31 06:03:18 gsotirov Exp $
+# $Id: qemu.SlackBuild,v 1.11 2016/07/31 12:33:51 gsotirov Exp $
 #
 
 . ../../slack-package.conf
 
 NAME=qemu
-VERSION=0.14.1
+VERSION=1.0.1
 ARCH=${ARCH:-i486}
 BUILD=${BUILD:-1}
 
@@ -59,22 +59,35 @@ fix_source
 CFLAGS=$SLKCFLAGS \
 CXXFLAGS=$SLKCFLAGS \
 ./configure --prefix=/usr \
+            --sysconfdir=/etc \
             --audio-drv-list=oss,alsa,sdl,esd \
             --audio-card-list=ac97,es1370,sb16,cs4231a,adlib,gus \
+            --enable-sdl \
+            --enable-vnc \
             --enable-mixemu \
             --enable-vnc-tls \
             --enable-vnc-sasl \
+            --enable-vnc-jpeg \
+            --enable-vnc-png \
+            --enable-vnc-thread \
             --enable-curses \
             --enable-curl \
             --enable-bluez \
+            --enable-kvm \
             --enable-system \
             --enable-user \
             --enable-linux-user \
+            --enable-pie \
+            --enable-linux-aio \
             --enable-uuid \
-            --enable-io-thread || exit 4
+            --enable-attr \
+            --enable-docs \
+            --enable-vhost-net \
+            --enable-smartcard \
+            --enable-guest-agent || exit 4
 
 # Build & install
-make V=1 -j2 || exit 5
+make V=1 || exit 5
 make DESTDIR=$PKG \
      bindir=/bin \
      mandir=/usr/man \
