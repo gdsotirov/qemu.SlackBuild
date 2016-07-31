@@ -1,0 +1,33 @@
+# Patch to fix CFLAGS with enable gcov
+# Copyright (C) 2016 Georgi D. Sotirov <gdsotirov@dir.bg>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# Visit SlackPack at http://sotirov-bg.net/slackpack/
+#
+# $Id: qemu-1.6.2.diff,v 1.1 2016/07/31 15:36:50 gsotirov Exp $
+#
+diff -urNad qemu-1.6.2-orig/configure qemu-1.6.2/configure
+--- qemu-1.6.2-orig/configure	2013-12-16 18:13:16.000000000 +0200
++++ qemu-1.6.2/configure	2016-07-31 18:33:13.000000000 +0300
+@@ -3386,7 +3386,7 @@
+ # After here, no more $cc or $ld runs
+ 
+ if test "$gcov" = "yes" ; then
+-  CFLAGS="-fprofile-arcs -ftest-coverage -g $CFLAGS"
++  CFLAGS="-fprofile-arcs -ftest-coverage $CFLAGS"
+   LDFLAGS="-fprofile-arcs -ftest-coverage $LDFLAGS"
+ elif test "$debug" = "no" ; then
+   CFLAGS="-O2 -D_FORTIFY_SOURCE=2 $CFLAGS"
