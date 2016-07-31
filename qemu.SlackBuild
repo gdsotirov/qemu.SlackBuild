@@ -19,7 +19,7 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: qemu.SlackBuild,v 1.11 2016/07/31 12:33:51 gsotirov Exp $
+# $Id: qemu.SlackBuild,v 1.12 2016/07/31 13:04:43 gsotirov Exp $
 #
 
 . ../../slack-package.conf
@@ -55,6 +55,9 @@ tar -xvf $CWD/$NAME-$VERSION.tar.?z* || exit 3
 cd $SRC
 fix_source
 
+# Apply patches
+patch -b -z .orig -p1 < $CWD/$NAME-$VERSION.diff || exit 4
+
 # Configure
 CFLAGS=$SLKCFLAGS \
 CXXFLAGS=$SLKCFLAGS \
@@ -84,16 +87,16 @@ CXXFLAGS=$SLKCFLAGS \
             --enable-docs \
             --enable-vhost-net \
             --enable-smartcard \
-            --enable-guest-agent || exit 4
+            --enable-guest-agent || exit 5
 
 # Build & install
-make V=1 || exit 5
+make V=1 || exit 6
 make DESTDIR=$PKG \
      bindir=/bin \
      mandir=/usr/man \
      datadir=/usr/share/$NAME \
      docdir=/usr/doc/$NAME-$VERSION \
-     install || exit 6
+     install || exit 7
 
 # Preapare
 bin_perms $PKG
@@ -106,9 +109,10 @@ install -m 644 $CWD/slack-desc     $PKG/install/slack-desc
 install -m 644 $CWD/slack-required $PKG/install/slack-required
 
 mkdir -p $PKG/usr/src/slackbuilds/$NAME-$VERSION
-install -m 644 $CWD/slack-desc       $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-desc
-install -m 644 $CWD/slack-required   $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-required
-install -m 644 $CWD/$NAME.SlackBuild $PKG/usr/src/slackbuilds/$NAME-$VERSION/$NAME.SlackBuild
+install -m 644 $CWD/slack-desc          $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-desc
+install -m 644 $CWD/slack-required      $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-required
+install -m 644 $CWD/$NAME.SlackBuild    $PKG/usr/src/slackbuilds/$NAME-$VERSION/$NAME.SlackBuild
+install -m 644 $CWD/$NAME-$VERSION.diff $PKG/usr/src/slackbuilds/$NAME-$VERSION/$NAME-$VERSION.diff
 
 # Pack
 cd $PKG
