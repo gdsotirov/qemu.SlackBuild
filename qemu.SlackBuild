@@ -19,13 +19,13 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: qemu.SlackBuild,v 1.14 2016/08/01 11:37:53 gsotirov Exp $
+# $Id: qemu.SlackBuild,v 1.15 2016/08/01 18:11:08 gsotirov Exp $
 #
 
 . ../../slack-package.conf
 
 NAME=qemu
-VERSION=1.6.2
+VERSION=2.4.1
 ARCH=${ARCH:-i486}
 BUILD=${BUILD:-1}
 
@@ -68,28 +68,33 @@ CXXFLAGS=$SLKCFLAGS \
             --libdir=/usr/lib${LIBDIRSUFFIX} \
             --sysconfdir=/etc \
             --localstatedir=/var \
-            --audio-drv-list=oss,alsa,sdl,esd \
+            --audio-drv-list=oss,alsa,sdl \
+            --enable-gcov \
+            --enable-system \
+            --enable-user \
+            --enable-linux-user \
+            --enable-guest-agent \
+            --enable-docs \
+            --enable-pie \
+            --enable-modules \
             --disable-debug-info \
+            --enable-gnutls \
             --enable-sdl \
             --enable-gtk \
+            --enable-vte \
+            --enable-curses \
             --enable-vnc \
-            --enable-mixemu \
             --enable-vnc-tls \
             --enable-vnc-sasl \
             --enable-vnc-jpeg \
             --enable-vnc-png \
-            --enable-curses \
+            --enable-virtfs \
             --enable-curl \
             --enable-bluez \
             --enable-kvm \
-            --enable-system \
-            --enable-user \
-            --enable-linux-user \
-            --enable-pie \
-            --enable-linux-aio \
             --enable-uuid \
+            --enable-linux-aio \
             --enable-attr \
-            --enable-docs \
             --enable-vhost-net \
             --enable-libiscsi \
             --enable-smartcard-nss \
@@ -109,7 +114,7 @@ make DESTDIR=$PKG \
 # Preapare
 bin_perms $PKG
 ( cd $PKG; strip_bin; strip_lib )
-( cd $SRC; create_docs $PKG $NAME-$VERSION )
+( cd $SRC; DOCFILES="$DOCFILES CODING_STYLE" create_docs $PKG $NAME-$VERSION )
 gzip_man $PKG
 
 mkdir -p $PKG/install
