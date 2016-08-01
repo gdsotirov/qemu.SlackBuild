@@ -19,13 +19,13 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: qemu.SlackBuild,v 1.12 2016/07/31 13:04:43 gsotirov Exp $
+# $Id: qemu.SlackBuild,v 1.13 2016/08/01 06:46:43 gsotirov Exp $
 #
 
 . ../../slack-package.conf
 
 NAME=qemu
-VERSION=1.0.1
+VERSION=1.6.2
 ARCH=${ARCH:-i486}
 BUILD=${BUILD:-1}
 
@@ -55,24 +55,29 @@ tar -xvf $CWD/$NAME-$VERSION.tar.?z* || exit 3
 cd $SRC
 fix_source
 
-# Apply patches
-patch -b -z .orig -p1 < $CWD/$NAME-$VERSION.diff || exit 4
+# Apply patch (if any)
+if [ -e $CWD/$NAME-$VERSION.diff ]; then
+  patch -b -z .orig -p1 < $CWD/$NAME-$VERSION.diff || exit 4
+fi
 
 # Configure
 CFLAGS=$SLKCFLAGS \
 CXXFLAGS=$SLKCFLAGS \
 ./configure --prefix=/usr \
+            --docdir=/usr/doc/$NAME-$VERSION \
+            --libdir=/usr/lib${LIBDIRSUFFIX} \
             --sysconfdir=/etc \
+            --localstatedir=/var \
             --audio-drv-list=oss,alsa,sdl,esd \
-            --audio-card-list=ac97,es1370,sb16,cs4231a,adlib,gus \
+            --disable-debug-info \
             --enable-sdl \
+            --enable-gtk \
             --enable-vnc \
             --enable-mixemu \
             --enable-vnc-tls \
             --enable-vnc-sasl \
             --enable-vnc-jpeg \
             --enable-vnc-png \
-            --enable-vnc-thread \
             --enable-curses \
             --enable-curl \
             --enable-bluez \
@@ -86,11 +91,12 @@ CXXFLAGS=$SLKCFLAGS \
             --enable-attr \
             --enable-docs \
             --enable-vhost-net \
-            --enable-smartcard \
-            --enable-guest-agent || exit 5
+            --enable-smartcard-nss \
+            --enable-guest-agent \
+	    --enable-gcov || exit 5
 
 # Build & install
-make V=1 || exit 6
+make V=1 -j4 || exit 6
 make DESTDIR=$PKG \
      bindir=/bin \
      mandir=/usr/man \
@@ -100,7 +106,7 @@ make DESTDIR=$PKG \
 
 # Preapare
 bin_perms $PKG
-( cd $PKG; strip_bin )
+( cd $PKG; strip_bin; strip_lib )
 ( cd $SRC; create_docs $PKG $NAME-$VERSION )
 gzip_man $PKG
 
@@ -112,7 +118,9 @@ mkdir -p $PKG/usr/src/slackbuilds/$NAME-$VERSION
 install -m 644 $CWD/slack-desc          $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-desc
 install -m 644 $CWD/slack-required      $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-required
 install -m 644 $CWD/$NAME.SlackBuild    $PKG/usr/src/slackbuilds/$NAME-$VERSION/$NAME.SlackBuild
+if [ -e $CWD/$NAME-$VERSION.diff ]; then
 install -m 644 $CWD/$NAME-$VERSION.diff $PKG/usr/src/slackbuilds/$NAME-$VERSION/$NAME-$VERSION.diff
+fi
 
 # Pack
 cd $PKG
