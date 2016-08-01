@@ -19,7 +19,7 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: qemu.SlackBuild,v 1.13 2016/08/01 06:46:43 gsotirov Exp $
+# $Id: qemu.SlackBuild,v 1.14 2016/08/01 11:37:53 gsotirov Exp $
 #
 
 . ../../slack-package.conf
@@ -91,7 +91,9 @@ CXXFLAGS=$SLKCFLAGS \
             --enable-attr \
             --enable-docs \
             --enable-vhost-net \
+            --enable-libiscsi \
             --enable-smartcard-nss \
+            --enable-libusb \
             --enable-guest-agent \
 	    --enable-gcov || exit 5
 
