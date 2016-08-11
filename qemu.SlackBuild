@@ -19,14 +19,14 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: qemu.SlackBuild,v 1.15 2016/08/01 18:11:08 gsotirov Exp $
+# $Id: qemu.SlackBuild,v 1.16 2016/08/11 18:14:31 gsotirov Exp $
 #
 
 . ../../slack-package.conf
 
 NAME=qemu
-VERSION=2.4.1
-ARCH=${ARCH:-i486}
+VERSION=2.6.0
+ARCH=${ARCH:-i586}
 BUILD=${BUILD:-1}
 
 TMP=${TMP:-/tmp}
@@ -68,7 +68,7 @@ CXXFLAGS=$SLKCFLAGS \
             --libdir=/usr/lib${LIBDIRSUFFIX} \
             --sysconfdir=/etc \
             --localstatedir=/var \
-            --audio-drv-list=oss,alsa,sdl \
+            --audio-drv-list=oss,alsa,sdl,pa \
             --enable-gcov \
             --enable-system \
             --enable-user \
@@ -79,12 +79,13 @@ CXXFLAGS=$SLKCFLAGS \
             --enable-modules \
             --disable-debug-info \
             --enable-gnutls \
+            --enable-nettle \
+            --disable-gcrypt \
             --enable-sdl \
             --enable-gtk \
             --enable-vte \
             --enable-curses \
             --enable-vnc \
-            --enable-vnc-tls \
             --enable-vnc-sasl \
             --enable-vnc-jpeg \
             --enable-vnc-png \
@@ -97,10 +98,11 @@ CXXFLAGS=$SLKCFLAGS \
             --enable-attr \
             --enable-vhost-net \
             --enable-libiscsi \
-            --enable-smartcard-nss \
             --enable-libusb \
-            --enable-guest-agent \
-	    --enable-gcov || exit 5
+            --enable-lzo \
+            --enable-bzip2 \
+            --enable-jemalloc || exit 5
+#           --enable-smartcard \ # requires libcacard
 
 # Build & install
 make V=1 -j4 || exit 6
