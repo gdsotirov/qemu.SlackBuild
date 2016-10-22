@@ -19,13 +19,13 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: qemu.SlackBuild,v 1.17 2016/10/22 14:48:04 gsotirov Exp $
+# $Id: qemu.SlackBuild,v 1.18 2016/10/22 14:58:03 gsotirov Exp $
 #
 
 . ../../slack-package.conf
 
 NAME=qemu
-VERSION=2.6.2
+VERSION=2.7.0
 ARCH=${ARCH:-i586}
 BUILD=${BUILD:-1}
 
