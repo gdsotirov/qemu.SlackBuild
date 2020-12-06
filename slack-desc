@@ -8,4 +8,4 @@ qemu: processes compiled for one CPU on another CPU), or acting as a
 qemu: virtualizer (via the kqemu Accelerator Module), which could be
 qemu: compiled separately for the running kernel.
 qemu:
-qemu: Packaged by Georgi D. Sotirov <gdsotirov@dir.bg>
+qemu: Packaged by Georgi D. Sotirov <gdsotirov@gmail.com>
